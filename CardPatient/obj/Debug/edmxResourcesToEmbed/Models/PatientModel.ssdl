@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Хранилище HospitalModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="diagnoses">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="doctors">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="firstName" Type="nvarchar(max)" />
+    <Property Name="lastName" Type="nvarchar(max)" />
+    <Property Name="patronymic" Type="nvarchar(max)" />
+    <Property Name="specialty_id" Type="int" />
+  </EntityType>
+  <EntityType Name="patients">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="uin" Type="nvarchar" MaxLength="12" />
+    <Property Name="address" Type="nvarchar(max)" />
+    <Property Name="phone" Type="nvarchar(max)" />
+    <Property Name="firstName" Type="nvarchar(max)" />
+    <Property Name="lastName" Type="nvarchar(max)" />
+    <Property Name="patronymic" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="specialties">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="visitHistory">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="patient_id" Type="int" />
+    <Property Name="specialty_id" Type="int" />
+    <Property Name="doctor_id" Type="int" />
+    <Property Name="diagnosis_id" Type="int" />
+    <Property Name="complaints" Type="nvarchar(max)" />
+    <Property Name="date" Type="datetime" />
+  </EntityType>
+  <Association Name="FK__doctors__special__52593CB8">
+    <End Role="specialties" Type="Self.specialties" Multiplicity="0..1" />
+    <End Role="doctors" Type="Self.doctors" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="specialties">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="doctors">
+        <PropertyRef Name="specialty_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__visitHist__diagn__59FA5E80">
+    <End Role="diagnoses" Type="Self.diagnoses" Multiplicity="0..1" />
+    <End Role="visitHistory" Type="Self.visitHistory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="diagnoses">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="visitHistory">
+        <PropertyRef Name="diagnosis_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__visitHist__docto__59063A47">
+    <End Role="doctors" Type="Self.doctors" Multiplicity="0..1" />
+    <End Role="visitHistory" Type="Self.visitHistory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="doctors">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="visitHistory">
+        <PropertyRef Name="doctor_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__visitHist__patie__571DF1D5">
+    <End Role="patients" Type="Self.patients" Multiplicity="0..1" />
+    <End Role="visitHistory" Type="Self.visitHistory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="patients">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="visitHistory">
+        <PropertyRef Name="patient_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__visitHist__speci__5812160E">
+    <End Role="specialties" Type="Self.specialties" Multiplicity="0..1" />
+    <End Role="visitHistory" Type="Self.visitHistory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="specialties">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="visitHistory">
+        <PropertyRef Name="specialty_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="Хранилище HospitalModelContainer">
+    <EntitySet Name="diagnoses" EntityType="Self.diagnoses" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="doctors" EntityType="Self.doctors" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="patients" EntityType="Self.patients" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="specialties" EntityType="Self.specialties" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="visitHistory" EntityType="Self.visitHistory" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__doctors__special__52593CB8" Association="Self.FK__doctors__special__52593CB8">
+      <End Role="specialties" EntitySet="specialties" />
+      <End Role="doctors" EntitySet="doctors" />
+    </AssociationSet>
+    <AssociationSet Name="FK__visitHist__diagn__59FA5E80" Association="Self.FK__visitHist__diagn__59FA5E80">
+      <End Role="diagnoses" EntitySet="diagnoses" />
+      <End Role="visitHistory" EntitySet="visitHistory" />
+    </AssociationSet>
+    <AssociationSet Name="FK__visitHist__docto__59063A47" Association="Self.FK__visitHist__docto__59063A47">
+      <End Role="doctors" EntitySet="doctors" />
+      <End Role="visitHistory" EntitySet="visitHistory" />
+    </AssociationSet>
+    <AssociationSet Name="FK__visitHist__patie__571DF1D5" Association="Self.FK__visitHist__patie__571DF1D5">
+      <End Role="patients" EntitySet="patients" />
+      <End Role="visitHistory" EntitySet="visitHistory" />
+    </AssociationSet>
+    <AssociationSet Name="FK__visitHist__speci__5812160E" Association="Self.FK__visitHist__speci__5812160E">
+      <End Role="specialties" EntitySet="specialties" />
+      <End Role="visitHistory" EntitySet="visitHistory" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
